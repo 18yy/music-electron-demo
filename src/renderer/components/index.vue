@@ -1,33 +1,55 @@
 <template>
   <div id="wrapper">
-    <div class="main">
-      <div class="list" v-for="item in playlists" :key="item.id">
-        <img :src="item.coverImgUrl" alt="">
-        <p>{{item.name}}</p>
-      </div>
-    </div>
+    <!-- <listsPage :playlists="playlists"></listsPage> -->
+    <listDetail></listDetail>
+    
     <playBar></playBar>
   </div>
 </template>
 
 <script>
   import playBar from './playBar/bar'
+  import listsPage from './pages/lists'
+  import listDetail from './pages/listDetail'
+
 
   export default {
     name: 'landing-page',
-    components: { playBar},
+    components: { 
+      playBar,
+      listsPage,
+      listDetail
+    },
     data(){
       return {
-        playlists: []
-      }
+        playlists: [],
+        tableData2: [{
+            date: '2016-05-02',
+            name: '王小虎',
+            address: '上海市普陀区金沙江路 1518 弄'
+          }, {
+            date: '2016-05-04',
+            name: '王小虎',
+            address: '上海市普陀区金沙江路 1517 弄'
+          }, {
+            date: '2016-05-01',
+            name: '王小虎',
+            address: '上海市普陀区金沙江路 1519 弄'
+          }, {
+            date: '2016-05-03',
+            name: '王小虎',
+            address: '上海市普陀区金沙江路 1516 弄'
+          }]
+        }
+      
     },
     created(){
        this.$axios({
           method:'get',
-          url:'http://localhost:3000/top/playlist?limit=9&order=hot'
+          url:'http://localhost:3000/toplist/detail'
         }).then((response) =>{        
-          console.log(response.data.playlists);
-          this.playlists = response.data.playlists;      
+          console.log(response.data.list);
+          this.playlists = response.data.list;      
         }).catch((error)=>{
           console.log(error)
         })
@@ -40,28 +62,5 @@
     height: 100vh;
     width: 100vw;
   }
-  .main{
-    padding: 48px 96px 80px 96px;
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-  }
-  .list {
-    width: 260px;
-    height: 200px;
-    border: 1px solid #ccc;
-    margin-bottom: 48px;
-  }
-  /* .list:nth-child(3n+0) {
-    width: 265px;
-    height: 200px;
-    border: 1px solid #ccc;
-    margin-right: 0;
-    margin-bottom: 48px;
-  } */
-  .list img{
-    width: 100%;
-    height: 70%;
-    background: rgb(66,109,171)
-  }
+  
 </style>
